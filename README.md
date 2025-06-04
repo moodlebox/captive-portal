@@ -116,24 +116,24 @@ A periodic clean-up of passlist is expected as device-clients are expected to be
 $ sudo nft -a list table nat
 table ip nat { # handle 1
     chain PREROUTING { # handle 2
-        ip saddr 192.168.2.128/25 tcp dport 80 counter packets 648 bytes 41448 jump CAPTIVE_HTTP comment "Captured HTTP traffic to CAPTIVE_HTTP" # handle 6
-        ip saddr 192.168.2.128/25 tcp dport 443 counter packets 9819 bytes 624438 jump CAPTIVE_HTTPS comment "Captured HTTPS traffic to CAPTIVE_HTTPS" # handle 7
+        ip saddr 192.168.144.128/25 tcp dport 80 counter packets 648 bytes 41448 jump CAPTIVE_HTTP comment "Captured HTTP traffic to CAPTIVE_HTTP" # handle 6
+        ip saddr 192.168.144.128/25 tcp dport 443 counter packets 9819 bytes 624438 jump CAPTIVE_HTTPS comment "Captured HTTPS traffic to CAPTIVE_HTTPS" # handle 7
     }
 
     chain CAPTIVE_HTTP { # handle 3
         ip protocol tcp counter packets 648 bytes 41448 jump CAPTIVE_PASSLIST comment "Jump to CAPTIVE_PASSLIST to try to escape filtering" # handle 8
-        ip protocol tcp counter packets 542 bytes 34996 dnat to 192.168.2.1:2080 comment "redirect HTTP(s) traffic to hotspot server port 2080" # handle 9
+        ip protocol tcp counter packets 542 bytes 34996 dnat to 192.168.144.1:2080 comment "redirect HTTP(s) traffic to hotspot server port 2080" # handle 9
     }
 
     chain CAPTIVE_HTTPS { # handle 4
         ip protocol tcp counter packets 9819 bytes 624438 jump CAPTIVE_PASSLIST comment "Jump to CAPTIVE_PASSLIST to try to escape filtering" # handle 10
-        ip protocol tcp counter packets 9409 bytes 599198 dnat to 192.168.2.1:2443 comment "redirect HTTP(s) traffic to hotspot server port 2443" # handle 11
+        ip protocol tcp counter packets 9409 bytes 599198 dnat to 192.168.144.1:2443 comment "redirect HTTP(s) traffic to hotspot server port 2443" # handle 11
     }
 
     chain CAPTIVE_PASSLIST { # handle 5
         ip daddr 198.51.100.1 tcp dport 80 counter packets 0 bytes 0 return comment "return derived addr to calling chain (captive_http)" # handle 12
         ip daddr 198.51.100.1 tcp dport 443 counter packets 0 bytes 0 return comment "return derived addr to calling chain (captive_https)" # handle 13
-        ip saddr 192.168.2.174 counter packets 3 bytes 192 accept comment "allow host" # handle 15
+        ip saddr 192.168.144.174 counter packets 3 bytes 192 accept comment "allow host" # handle 15
         ip protocol tcp counter packets 9951 bytes 634194 return comment "return non-accepted to calling chain (captive_httpx)" # handle 14
     }
 }
@@ -144,10 +144,10 @@ table ip nat { # handle 1
 
 Configuration is done solely via environment variables
 
-| Variable             | Default       | Usage                                                                       |
-| -------------------- | ------------- | --------------------------------------------------------------------------- |
-| `HOSTPOT_IP`         | `192.168.2.1` | IP to redirect unregistered HTTP traffic to                                 |
-| `CAPTURED_NETWORKS`  |               | List of `|` separated networks to limit *capture* to. Otherwise any traffic |
-| `CAPTURED_ADDRESS`   | `198.51.100.1`| IP address to which HTTP/S traffic must be redirected to portal.            |
-| `HTTP_PORT`          | `2080`        | Port to redirect captured HTTP traffic to on *HOTSPOT_IP*                   |
-| `HTTPS_PORT`         | `2443`        | Port to redirect captured HTTPS traffic to on *HOTSPOT_IP*                  |
+| Variable             | Default         | Usage                                                                       |
+| -------------------- | --------------- | --------------------------------------------------------------------------- |
+| `HOSTPOT_IP`         | `192.168.144.1` | IP to redirect unregistered HTTP traffic to                                 |
+| `CAPTURED_NETWORKS`  |                 | List of `|` separated networks to limit *capture* to. Otherwise any traffic |
+| `CAPTURED_ADDRESS`   | `198.51.100.1`  | IP address to which HTTP/S traffic must be redirected to portal.            |
+| `HTTP_PORT`          | `2080`          | Port to redirect captured HTTP traffic to on *HOTSPOT_IP*                   |
+| `HTTPS_PORT`         | `2443`          | Port to redirect captured HTTPS traffic to on *HOTSPOT_IP*                  |

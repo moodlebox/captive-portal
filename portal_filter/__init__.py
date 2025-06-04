@@ -42,7 +42,7 @@ except OSError as exc:
 logging.basicConfig(level=logging.DEBUG if os.getenv("DEBUG") else logging.INFO)
 logger = logging.getLogger("portal-filter")
 
-PORTAL_IP: str = os.getenv("HOTSPOT_IP", "192.168.2.1")
+PORTAL_IP: str = os.getenv("HOTSPOT_IP", "192.168.144.1")
 HTTP_PORT: int = int(os.getenv("HTTP_PORT", "2080"))
 HTTPS_PORT: int = int(os.getenv("HTTP_PORT", "2443"))
 CAPTURED_NETWORKS: List[str] = os.getenv("CAPTURED_NETWORKS", "").split("|")
@@ -199,8 +199,8 @@ def setup_capture(hotspot_ip: str, captured_networks: List[str]):
     else:
         # Forward HTTP(s) traffic on captured network to CAPTIVE_HTTP(s)
         for network in captured_networks:
-            # add rule ip nat PREROUTING ip saddr 192.168.2.128/25 \
-            # ip daddr != 192.168.2.1 tcp dport 80 counter jump CAPTIVE_HTTP
+            # add rule ip nat PREROUTING ip saddr 192.168.144.128/25 \
+            # ip daddr != 192.168.144.1 tcp dport 80 counter jump CAPTIVE_HTTP
             rules.append(
                 f"add rule ip nat PREROUTING ip saddr {network} tcp "
                 + "dport 80 counter jump CAPTIVE_HTTP "
