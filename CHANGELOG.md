@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Default and documentation to use 192.168.2.128/25 network instead of 192.168.2.128/25
+- Default and documentation to use 192.168.144.128/25 network instead of 192.168.2.128/25
 
 ## [1.5.3] - 2025-05-07
 
