@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.INFO)
 @dataclass
 class Config:
     # user-defined variables
-    name: str = os.getenv("HOTSPOT_NAME", "Kiwix Hotspot")
-    fqdn: str = os.getenv("HOTSPOT_FQDN", "default.hotspot")
+    name: str = os.getenv("HOTSPOT_NAME", "MoodleBox Hotspot")
+    fqdn: str = os.getenv("HOTSPOT_FQDN", "moodlebox.hotspot")
     timeout_mn: int = int(os.getenv("TIMEOUT", "60"))  # 1h default
     footer_note: str = os.getenv("FOOTER_NOTE", "")
 

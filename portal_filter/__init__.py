@@ -42,7 +42,7 @@ except OSError as exc:
 logging.basicConfig(level=logging.DEBUG if os.getenv("DEBUG") else logging.INFO)
 logger = logging.getLogger("portal-filter")
 
-PORTAL_IP: str = os.getenv("HOTSPOT_IP", "192.168.144.1")
+PORTAL_IP: str = os.getenv("HOTSPOT_IP", "10.0.0.1")
 HTTP_PORT: int = int(os.getenv("HTTP_PORT", "2080"))
 HTTPS_PORT: int = int(os.getenv("HTTP_PORT", "2443"))
 CAPTURED_NETWORKS: List[str] = os.getenv("CAPTURED_NETWORKS", "").split("|")
